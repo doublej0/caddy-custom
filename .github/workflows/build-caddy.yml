@@ -41,12 +41,3 @@ jobs:
             ghcr.io/doublej0/custom-caddy:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Notify Home Assistant on failure
-        if: failure()
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: 'https://ha.jonesopolis.com/api/webhook/github-build-failure'
-          method: 'POST'
-          contentType: 'application/json'
-          data: '{"repo": "${{ github.repository }}", "workflow": "${{ github.workflow }}", "run_url": "https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"}'
