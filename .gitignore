@@ -1,0 +1,11 @@
+# Caddy runtime data
+data/
+config/
+
+# Caddy backup configs
+*.bak
+*.save
+
+# Environment files
+.env
+*.env
