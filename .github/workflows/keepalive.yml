@@ -2,7 +2,7 @@ name: Keepalive
 
 on:
   schedule:
-    - cron: '0 9 1 * *'
+    - cron: '0 9 1 * *'  # 1st of every month at 09:00 UTC
   workflow_dispatch:
 
 jobs:
@@ -12,4 +12,13 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v5
-      - uses: efrecon/gh-action-keepalive@main
+
+      - name: Commit keepalive marker
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          mkdir -p .github
+          echo "Last keepalive: $(date -u +"%Y-%m-%dT%H:%M:%SZ")" > .github/keepalive
+          git add .github/keepalive
+          git diff --cached --quiet || git commit -m "chore: keepalive [skip ci]"
+          git push
